@@ -61,8 +61,6 @@ client.on('message', (channel, tags, message, self) => {
         var commands = ''
         for (const key in data){
             const currentData = JSON.parse(JSON.stringify(data[key]))
-            console.log(data.length)
-            console.log(parseInt(key)+1)
             if (data.length != parseInt(key)+1) {
                 commands=commands+currentData.command+', '
             } else {
