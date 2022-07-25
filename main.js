@@ -32,12 +32,14 @@ client.on('message', (channel, tags, message, self) => {
         if (splitted[1] == null) {return client.say(channel, 'Need to enter command name.')}
         if (splitted[2] == null) {return client.say(channel, 'Need to give content to the command')}
 
+        const content = message.split(splitted[1]+' ')[1]
+
         const data = Database.prepare('SELECT * FROM `commands` WHERE `channel` = ? AND `command` = ?').get(c, splitted[1])
 
         if (data != null) {return client.say(channel, 'Command already exist')} 
 
         const g = Database.prepare("INSERT INTO `commands` (`channel`, `command`, `content` ) VALUES (?, ?, ?)");
-        g.run(c, splitted[1], splitted[2])
+        g.run(c, splitted[1], content)
 
         client.say(channel, 'Success! Created a command named: '+splitted[1])
     } else if (message.includes(">remove")) {
@@ -59,6 +61,8 @@ client.on('message', (channel, tags, message, self) => {
         var commands = ''
         for (const key in data){
             const currentData = JSON.parse(JSON.stringify(data[key]))
+            console.log(data.length)
+            console.log(parseInt(key)+1)
             if (data.length != parseInt(key)+1) {
                 commands=commands+currentData.command+', '
             } else {
